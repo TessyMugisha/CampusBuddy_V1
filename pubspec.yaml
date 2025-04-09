@@ -1,0 +1,80 @@
+name: campus_buddy
+description: "A comprehensive campus mobile application for university students."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # UI and Design
+  cupertino_icons: ^1.0.6
+  flutter_svg: ^2.0.9
+  google_fonts: ^6.1.0
+  cached_network_image: ^3.3.1
+  shimmer: ^3.0.0
+  lottie: ^2.7.0
+  
+  # Navigation
+  go_router: ^14.8.1
+  
+  # State Management
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.7
+  provider: ^6.1.1
+  
+  # Network and API
+  dio: ^5.4.0
+  http: ^1.2.0
+  connectivity_plus: ^5.0.2
+  
+  # Local Storage
+  shared_preferences: ^2.5.3
+  sqflite: ^2.3.2
+  path_provider: ^2.1.2
+  
+  # Authentication (temporarily disabled for web testing)
+  # firebase_core: ^2.24.2
+  # firebase_auth: ^4.16.0
+  # google_sign_in: ^6.2.1
+  
+  # Utilities
+  intl: ^0.20.2
+  url_launcher: ^6.2.4
+  image_picker: ^1.0.7
+  geolocator: ^10.1.0
+  permission_handler: ^11.2.0
+  flutter_local_notifications: ^18.0.1
+  
+  # Calendar and Events
+  table_calendar: ^3.0.9
+  
+  # QR Code
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^3.5.5
+  flutter_staggered_animations: ^1.1.1
+  google_maps_flutter: ^2.5.0
+  location: ^5.0.3
+  timezone: ^0.10.0
+  firebase_auth: ^5.5.2
+  cloud_firestore: ^5.6.6
+  google_sign_in: ^6.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  bloc_test: ^9.1.5
+  mockito: ^5.4.4
+  build_runner: ^2.4.8
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/animations/

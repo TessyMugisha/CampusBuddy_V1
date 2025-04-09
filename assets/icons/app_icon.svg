@@ -1,0 +1,31 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background -->
+    <rect width="200" height="200" rx="40" fill="#1A237E"/>
+    
+    <!-- School Building -->
+    <rect x="40" y="100" width="120" height="70" rx="5" fill="#FFFFFF"/>
+    
+    <!-- Roof -->
+    <path d="M100 30L160 90H40L100 30Z" fill="#FFC107"/>
+    
+    <!-- Door -->
+    <rect x="85" y="140" width="30" height="30" rx="2" fill="#4CAF50"/>
+    
+    <!-- Windows -->
+    <rect x="55" y="110" width="20" height="20" rx="2" fill="#E3F2FD"/>
+    <rect x="90" y="110" width="20" height="20" rx="2" fill="#E3F2FD"/>
+    <rect x="125" y="110" width="20" height="20" rx="2" fill="#E3F2FD"/>
+    
+    <!-- Steps -->
+    <rect x="80" y="170" width="40" height="5" rx="2" fill="#BDBDBD"/>
+    <rect x="75" y="175" width="50" height="5" rx="2" fill="#9E9E9E"/>
+    <rect x="70" y="180" width="60" height="5" rx="2" fill="#757575"/>
+    
+    <!-- Columns -->
+    <rect x="60" y="100" width="5" height="70" fill="#EEEEEE"/>
+    <rect x="135" y="100" width="5" height="70" fill="#EEEEEE"/>
+    
+    <!-- Flag -->
+    <rect x="150" y="50" width="5" height="50" fill="#BDBDBD"/>
+    <path d="M155 50L175 60L155 70V50Z" fill="#F44336"/>
+</svg>
