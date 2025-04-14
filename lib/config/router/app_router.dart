@@ -1,3 +1,38 @@
+/// Campus Buddy - Navigation Configuration
+///
+/// This file configures the application's navigation using GoRouter.
+/// It defines all possible routes and their corresponding screens.
+///
+/// Navigation Structure:
+/// 1. Root Routes:
+///    - Splash Screen (/)
+///    - Authentication Routes (/login, /signup)
+///
+/// 2. Main App Shell (Bottom Navigation):
+///    - Home (/home)
+///    - Events (/events)
+///    - Courses (/courses)
+///    - Map (/map)
+///    - Profile (/profile)
+///
+/// 3. Nested Routes:
+///    - Event Details (/events/:id)
+///    - Course Details (/courses/:id)
+///    - Other feature-specific screens
+///
+/// Navigation Keys:
+/// - _rootNavigatorKey: For root-level navigation
+/// - _shellNavigatorKey: For bottom navigation shell
+///
+/// Usage:
+/// To add new routes:
+/// 1. Import the corresponding screen
+/// 2. Add route definition in appropriate section
+/// 3. Update bottom navigation if needed
+///
+/// Note: Keep routes organized by feature and maintain consistent
+/// naming conventions for path parameters.
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,7 +54,10 @@ import '../../presentation/screens/events/event_detail_screen.dart';
 
 /// AppRouter handles all navigation in the app using GoRouter
 class AppRouter {
+  /// Root navigator key for top-level navigation
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
+
+  /// Shell navigator key for bottom navigation
   static final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
   /// Creates the GoRouter instance with all routes
@@ -33,7 +71,7 @@ class AppRouter {
         path: '/',
         builder: (context, state) => const SplashScreen(),
       ),
-      
+
       // Authentication routes
       GoRoute(
         path: '/login',
@@ -43,7 +81,7 @@ class AppRouter {
         path: '/signup',
         builder: (context, state) => const SignupScreen(),
       ),
-      
+
       // Main app shell with nested routes
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
@@ -56,7 +94,7 @@ class AppRouter {
             path: '/home',
             builder: (context, state) => const HomeScreen(),
           ),
-          
+
           // Events tab
           GoRoute(
             path: '/events',
@@ -69,7 +107,7 @@ class AppRouter {
               eventId: state.pathParameters['id'] ?? '',
             ),
           ),
-          
+
           // Courses tab
           GoRoute(
             path: '/courses',
@@ -82,19 +120,19 @@ class AppRouter {
               courseId: state.pathParameters['id'] ?? '',
             ),
           ),
-          
+
           // Map tab
           GoRoute(
             path: '/map',
             builder: (context, state) => const MapScreen(),
           ),
-          
+
           // Schedule tab
           GoRoute(
             path: '/schedule',
             builder: (context, state) => const ScheduleScreen(),
           ),
-          
+
           // Assignments tab
           GoRoute(
             path: '/assignments',
@@ -125,6 +163,11 @@ class AppRouter {
 }
 
 /// Scaffold with bottom navigation bar for the main app shell
+///
+/// This widget provides the main app layout with:
+/// 1. Bottom navigation bar
+/// 2. Content area for current route
+/// 3. Navigation state management
 class ScaffoldWithBottomNavBar extends StatefulWidget {
   final Widget child;
 
@@ -134,12 +177,19 @@ class ScaffoldWithBottomNavBar extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ScaffoldWithBottomNavBar> createState() => _ScaffoldWithBottomNavBarState();
+  State<ScaffoldWithBottomNavBar> createState() =>
+      _ScaffoldWithBottomNavBarState();
 }
 
 class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
   int _currentIndex = 0;
 
+  /// Bottom navigation items configuration
+  ///
+  /// Defines:
+  /// - Icons for each tab
+  /// - Labels for each tab
+  /// - Initial routes for each tab
   static const List<_BottomNavItem> _bottomNavItems = [
     _BottomNavItem(
       icon: Icons.home,
@@ -191,7 +241,12 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
       ),
     );
   }
-  
+
+  /// Handles navigation between bottom tabs
+  ///
+  /// Parameters:
+  /// - context: BuildContext for navigation
+  /// - index: Index of the tab to navigate to
   void _goOtherTab(BuildContext context, int index) {
     if (index == _currentIndex) return;
     setState(() => _currentIndex = index);
@@ -199,6 +254,12 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
   }
 }
 
+/// Represents a bottom navigation item
+///
+/// Contains:
+/// - icon: IconData for the tab
+/// - label: Text label for the tab
+/// - initialLocation: Route path for the tab
 class _BottomNavItem {
   final IconData icon;
   final String label;

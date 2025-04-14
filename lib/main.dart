@@ -1,3 +1,55 @@
+/// Campus Buddy - Main Application Entry Point
+///
+/// This file serves as the entry point for the Campus Buddy application.
+/// It initializes the app with necessary configurations, services, and state management.
+///
+/// Key Responsibilities:
+/// 1. Initialize Flutter bindings and services
+/// 2. Set up theme configurations
+/// 3. Configure state management (BLoC providers)
+/// 4. Initialize navigation (GoRouter)
+/// 5. Set up app-wide configurations
+///
+/// Dependencies:
+/// - flutter_bloc: For state management
+/// - go_router: For navigation
+/// - flutter_local_notifications: For notifications
+///
+/// Architecture:
+/// The app follows Clean Architecture with the following layers:
+/// - Presentation (UI)
+/// - Domain (Business Logic)
+/// - Data (Data Sources)
+/// - Services (External Services)
+///
+/// State Management:
+/// The app uses BLoC pattern with the following BLoCs:
+/// - AuthBloc: Handles authentication state
+/// - CoursesBloc: Manages course-related state
+/// - EventsBloc: Manages event-related state
+///
+/// Navigation:
+/// Uses GoRouter for declarative routing with:
+/// - Root navigation for auth flows
+/// - Shell navigation for main app sections
+/// - Nested navigation for feature-specific screens
+///
+/// Theme:
+/// Supports both light and dark themes with:
+/// - Material 3 design system
+/// - Custom color schemes
+/// - Consistent component styling
+///
+/// Usage:
+/// To add new features:
+/// 1. Create necessary BLoC
+/// 2. Add routes in AppRouter
+/// 3. Create corresponding screens
+/// 4. Update theme if needed
+///
+/// Note: This file should remain focused on app initialization and configuration.
+/// Business logic should be implemented in respective feature modules.
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,23 +63,41 @@ import 'presentation/blocs/events/events_bloc.dart';
 import 'presentation/blocs/events/events_event.dart';
 import 'services/notification_service.dart';
 
+/// Application entry point
+///
+/// Initializes:
+/// 1. Flutter bindings
+/// 2. Notification service
+/// 3. Screen orientation
+/// 4. Required use cases
+/// 5. Main app widget
 void main() async {
+  // Ensure Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize notifications
+  // Initialize notifications service
   await NotificationService().initialize();
 
+  // Set preferred screen orientations
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
 
-  // Create EventsUseCase instance
+  // Create EventsUseCase instance for event management
   final eventsUseCase = EventsUseCase();
 
+  // Run the application with required dependencies
   runApp(MyApp(eventsUseCase: eventsUseCase));
 }
 
+/// Root application widget
+///
+/// Configures:
+/// 1. Theme (light/dark)
+/// 2. State management (BLoCs)
+/// 3. Navigation (GoRouter)
+/// 4. App-wide configurations
 class MyApp extends StatelessWidget {
   final EventsUseCase eventsUseCase;
 
@@ -37,18 +107,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        // Authentication state management
         BlocProvider<AuthBloc>(
           create: (context) => AuthBloc.noAuth()..add(AuthCheckRequested()),
         ),
+        // Courses state management
         BlocProvider<CoursesBloc>(
           create: (context) => CoursesBloc(),
         ),
+        // Events state management
         BlocProvider<EventsBloc>(
           create: (context) => EventsBloc(eventsUseCase)..add(LoadEvents()),
         ),
       ],
       child: MaterialApp.router(
         title: 'Campus Buddy',
+        // Light theme configuration
         theme: ThemeData(
           primarySwatch: Colors.blue,
           useMaterial3: true,
@@ -83,6 +157,7 @@ class MyApp extends StatelessWidget {
             fillColor: Colors.grey[100],
           ),
         ),
+        // Dark theme configuration
         darkTheme: ThemeData.dark().copyWith(
           useMaterial3: true,
           primaryColor: Colors.blue,
