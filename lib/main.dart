@@ -27,6 +27,7 @@
 /// - AuthBloc: Handles authentication state
 /// - CoursesBloc: Manages course-related state
 /// - EventsBloc: Manages event-related state
+/// - CampusAIBloc: Manages campus AI-related state
 ///
 /// Navigation:
 /// Uses GoRouter for declarative routing with:
@@ -53,11 +54,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'config/router/app_router.dart';
 import 'domain/usecases/events_usecase.dart';
+import 'domain/usecases/campus_ai_usecases.dart';
+import 'domain/repositories/campus_ai_repository.dart';
+import 'data/repositories/campus_ai_repository_impl.dart';
+import 'data/services/claude_api_service.dart';
 import 'presentation/blocs/auth/auth_bloc.dart';
 import 'presentation/blocs/auth/auth_event.dart';
+import 'presentation/blocs/campus_ai/campus_ai_bloc.dart';
 import 'logic/blocs/courses/courses_bloc.dart';
 import 'presentation/blocs/events/events_bloc.dart';
 import 'presentation/blocs/events/events_event.dart';
@@ -75,6 +83,9 @@ void main() async {
   // Ensure Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Load environment variables
+  await dotenv.load(fileName: '.env');
+
   // Initialize notifications service
   await NotificationService().initialize();
 
@@ -87,8 +98,34 @@ void main() async {
   // Create EventsUseCase instance for event management
   final eventsUseCase = EventsUseCase();
 
+  // Initialize shared preferences for local storage
+  final sharedPreferences = await SharedPreferences.getInstance();
+
+  // Create ClaudeApiService for AI chat - using API key from environment variables
+  final claudeApiService = ClaudeApiService(
+    apiKey: dotenv.env['CLAUDE_API_KEY'] ?? '',
+    model: dotenv.env['CLAUDE_MODEL'] ?? 'claude-3-haiku-20240307',
+  );
+
+  // Create repository implementation
+  final campusAIRepository = CampusAIRepositoryImpl(
+    claudeApiService,
+    sharedPreferences,
+  );
+
+  // Create AI use cases
+  final sendMessageUseCase = SendMessageUseCase(campusAIRepository);
+  final getConversationHistoryUseCase =
+      GetConversationHistoryUseCase(campusAIRepository);
+  final clearConversationUseCase = ClearConversationUseCase(campusAIRepository);
+
   // Run the application with required dependencies
-  runApp(MyApp(eventsUseCase: eventsUseCase));
+  runApp(MyApp(
+    eventsUseCase: eventsUseCase,
+    sendMessageUseCase: sendMessageUseCase,
+    getConversationHistoryUseCase: getConversationHistoryUseCase,
+    clearConversationUseCase: clearConversationUseCase,
+  ));
 }
 
 /// Root application widget
@@ -100,8 +137,17 @@ void main() async {
 /// 4. App-wide configurations
 class MyApp extends StatelessWidget {
   final EventsUseCase eventsUseCase;
+  final SendMessageUseCase sendMessageUseCase;
+  final GetConversationHistoryUseCase getConversationHistoryUseCase;
+  final ClearConversationUseCase clearConversationUseCase;
 
-  const MyApp({super.key, required this.eventsUseCase});
+  const MyApp({
+    super.key,
+    required this.eventsUseCase,
+    required this.sendMessageUseCase,
+    required this.getConversationHistoryUseCase,
+    required this.clearConversationUseCase,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +164,14 @@ class MyApp extends StatelessWidget {
         // Events state management
         BlocProvider<EventsBloc>(
           create: (context) => EventsBloc(eventsUseCase)..add(LoadEvents()),
+        ),
+        // Campus Oracle AI chat state management
+        BlocProvider<CampusAIBloc>(
+          create: (context) => CampusAIBloc(
+            sendMessage: sendMessageUseCase,
+            getConversationHistory: getConversationHistoryUseCase,
+            clearConversation: clearConversationUseCase,
+          ),
         ),
       ],
       child: MaterialApp.router(
