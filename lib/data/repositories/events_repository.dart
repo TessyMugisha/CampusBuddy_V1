@@ -5,6 +5,7 @@ import 'dart:convert';
 import '../services/api_service.dart';
 import '../models/event_model.dart';
 import '../../domain/entities/event.dart';
+import '../../domain/repositories/events_repository_interface.dart';
 
 // Simple mock implementation of SharedPreferences for testing
 class _MockSharedPreferences implements SharedPreferences {
@@ -87,7 +88,7 @@ class _MockSharedPreferences implements SharedPreferences {
   Future<void> reload() async => null;
 }
 
-class EventsRepository {
+class EventsRepository implements EventsRepositoryInterface {
   final ApiService _apiService;
   final SharedPreferences _preferences;
   static const String _eventsCacheKey = 'events_cache';

@@ -9,6 +9,7 @@ import '../../../services/notification_service.dart';
 import '../../blocs/events/events_bloc.dart';
 import '../../blocs/events/events_event.dart';
 import '../../blocs/events/events_state.dart';
+import '../../helpers/event_ui_helper.dart';
 import '../../widgets/loading_indicator.dart';
 import '../../widgets/error_widget.dart' as error_widget;
 import 'event_detail_screen.dart';
@@ -203,7 +204,7 @@ class _EventsScreenState extends State<EventsScreen>
             Container(
               height: 120,
               decoration: BoxDecoration(
-                color: event.categoryColor.withOpacity(0.2),
+                color: EventUIHelper.getEventColor(event).withOpacity(0.2),
                 image: event.imageUrl != null && event.imageUrl!.isNotEmpty
                     ? DecorationImage(
                         image: NetworkImage(event.imageUrl!),
@@ -223,14 +224,14 @@ class _EventsScreenState extends State<EventsScreen>
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: event.categoryColor,
+                        color: EventUIHelper.getEventColor(event),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            event.categoryIcon,
+                            EventUIHelper.getEventIcon(event),
                             color: Colors.white,
                             size: 16,
                           ),
@@ -262,8 +263,9 @@ class _EventsScreenState extends State<EventsScreen>
                             isEnabled
                                 ? Icons.notifications_active
                                 : Icons.notifications_off,
-                            color:
-                                isEnabled ? event.categoryColor : Colors.grey,
+                            color: isEnabled
+                                ? EventUIHelper.getEventColor(event)
+                                : Colors.grey,
                           ),
                           onPressed: () async {
                             final newValue = !isEnabled;

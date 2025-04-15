@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+/// Event Entity
+///
+/// Represents a campus event in the domain layer.
+/// This class should not contain any UI or framework dependencies.
 class Event {
   final String id;
   final String title;
@@ -40,20 +43,25 @@ class Event {
     this.tags = const [],
   });
 
+  /// Whether the event is upcoming (starts in the future)
   bool get isUpcoming => startTime.isAfter(DateTime.now());
 
+  /// Whether the event is currently ongoing
   bool get isOngoing {
     final now = DateTime.now();
     return startTime.isBefore(now) && endTime.isAfter(now);
   }
 
+  /// Whether the event has already ended
   bool get isPast => endTime.isBefore(DateTime.now());
 
+  /// Whether the event has reached its attendance capacity
   bool get isFull =>
       maxAttendees != null &&
       currentAttendees != null &&
       currentAttendees! >= maxAttendees!;
 
+  /// Time range as a formatted string (e.g. "10:00 - 12:00")
   String get timeRangeString {
     final startFormat =
         '${startTime.hour}:${startTime.minute.toString().padLeft(2, '0')}';
@@ -62,6 +70,7 @@ class Event {
     return '$startFormat - $endFormat';
   }
 
+  /// Date in a readable format (e.g. "Jan 15, 2025")
   String get dateString {
     final months = [
       'Jan',
@@ -80,48 +89,17 @@ class Event {
     return '${months[startTime.month - 1]} ${startTime.day}, ${startTime.year}';
   }
 
+  /// Formatted date using intl package
   String get formattedDate {
     return DateFormat('MMM d, yyyy').format(startTime);
   }
 
+  /// Formatted time range using intl package
   String get formattedTime {
     return '${DateFormat('h:mm a').format(startTime)} - ${DateFormat('h:mm a').format(endTime)}';
   }
 
-  Color get categoryColor {
-    switch (category.toLowerCase()) {
-      case 'academic':
-        return Colors.blue;
-      case 'social':
-        return Colors.purple;
-      case 'sports':
-        return Colors.green;
-      case 'career':
-        return Colors.orange;
-      case 'arts':
-        return Colors.pink;
-      default:
-        return Colors.grey;
-    }
-  }
-
-  IconData get categoryIcon {
-    switch (category.toLowerCase()) {
-      case 'academic':
-        return Icons.school;
-      case 'social':
-        return Icons.people;
-      case 'sports':
-        return Icons.sports;
-      case 'career':
-        return Icons.work;
-      case 'arts':
-        return Icons.palette;
-      default:
-        return Icons.event;
-    }
-  }
-
+  /// Creates a copy of this Event with the given fields replaced by new values
   Event copyWith({
     String? id,
     String? title,
