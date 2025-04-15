@@ -104,6 +104,32 @@ class NewsCard extends StatelessWidget {
                   ],
                 ),
               ),
+
+              // News image if available
+              if (newsItem.imageUrl != null && newsItem.imageUrl!.isNotEmpty)
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(0),
+                    topRight: Radius.circular(0),
+                  ),
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: Image.asset(
+                      newsItem.imageUrl!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        // If image loading fails, use a placeholder
+                        return Container(
+                          color: Colors.grey[300],
+                          alignment: Alignment.center,
+                          child: const Icon(Icons.image,
+                              size: 50, color: Colors.grey),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+
               // News content
               Padding(
                 padding: const EdgeInsets.all(16),
