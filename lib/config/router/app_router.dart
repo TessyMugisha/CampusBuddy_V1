@@ -51,6 +51,7 @@ import '../../presentation/screens/schedule/schedule_screen.dart';
 import '../../presentation/screens/transit/transit_screen.dart';
 import '../../presentation/screens/courses/course_detail_screen.dart';
 import '../../presentation/screens/events/event_detail_screen.dart';
+import '../../presentation/screens/chat/campus_oracle_screen.dart';
 
 /// AppRouter handles all navigation in the app using GoRouter
 class AppRouter {
@@ -150,6 +151,11 @@ class AppRouter {
           GoRoute(
             path: '/profile',
             builder: (context, state) => const ProfileScreen(),
+          ),
+          // Campus Oracle route
+          GoRoute(
+            path: '/campus-oracle',
+            builder: (context, state) => const CampusOracleScreen(),
           ),
         ],
       ),

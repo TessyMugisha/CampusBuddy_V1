@@ -7,8 +7,10 @@ import '../presentation/screens/emergency_screen.dart';
 import '../presentation/screens/directory_screen.dart';
 import '../presentation/screens/dining_screen.dart';
 import '../presentation/screens/events_screen.dart';
-import '../presentation/screens/map_screen.dart';
+import '../presentation/screens/map/map_screen.dart';
+import '../presentation/screens/map/enhanced_map_screen.dart';
 import '../presentation/screens/profile_screen.dart';
+import '../presentation/screens/chat/campus_oracle_screen.dart';
 
 class AppRouter {
   static const String splash = '/';
@@ -19,7 +21,9 @@ class AppRouter {
   static const String dining = '/dining';
   static const String events = '/events';
   static const String map = '/map';
+  static const String enhancedMap = '/enhanced-map';
   static const String profile = '/profile';
+  static const String campusOracle = '/campus-oracle';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -39,8 +43,17 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => EventsScreen());
       case map:
         return MaterialPageRoute(builder: (_) => MapScreen());
+      case enhancedMap:
+        final args = settings.arguments as Map<String, dynamic>?;
+        final initialLocationId = args?['locationId'] as String?;
+        return MaterialPageRoute(
+          builder: (_) =>
+              EnhancedMapScreen(initialLocationId: initialLocationId),
+        );
       case profile:
         return MaterialPageRoute(builder: (_) => ProfileScreen());
+      case campusOracle:
+        return MaterialPageRoute(builder: (_) => CampusOracleScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
