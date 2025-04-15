@@ -207,7 +207,7 @@ class _EventsScreenState extends State<EventsScreen>
                 color: EventUIHelper.getEventColor(event).withOpacity(0.2),
                 image: event.imageUrl != null && event.imageUrl!.isNotEmpty
                     ? DecorationImage(
-                        image: NetworkImage(event.imageUrl!),
+                        image: AssetImage(event.imageUrl!),
                         fit: BoxFit.cover,
                       )
                     : null,

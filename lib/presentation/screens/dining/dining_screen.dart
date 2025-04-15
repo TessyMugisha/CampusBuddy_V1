@@ -8,35 +8,82 @@ class DiningScreen extends StatefulWidget {
   State<DiningScreen> createState() => _DiningScreenState();
 }
 
-class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderStateMixin {
+class _DiningScreenState extends State<DiningScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   String _selectedMeal = 'Lunch';
   final List<String> _mealTypes = ['Breakfast', 'Lunch', 'Dinner'];
-  
+
   final List<DiningLocation> _diningLocations = [
     DiningLocation(
       id: '1',
       name: 'Main Dining Hall',
-      description: 'The primary dining facility on campus with a variety of food stations.',
+      description:
+          'The primary dining facility on campus with a variety of food stations.',
       hours: 'Mon-Fri: 7:00 AM - 9:00 PM\nSat-Sun: 8:00 AM - 8:00 PM',
       mealOptions: {
         'Breakfast': [
-          MenuItem(name: 'Scrambled Eggs', description: 'Fresh scrambled eggs', price: 3.99, isVegetarian: true),
-          MenuItem(name: 'Pancakes', description: 'Stack of fluffy pancakes with syrup', price: 4.99, isVegetarian: true),
-          MenuItem(name: 'Bacon', description: 'Crispy bacon strips', price: 2.99),
-          MenuItem(name: 'Oatmeal', description: 'Hearty oatmeal with toppings', price: 3.49, isVegetarian: true, isVegan: true),
+          MenuItem(
+              name: 'Scrambled Eggs',
+              description: 'Fresh scrambled eggs',
+              price: 3.99,
+              isVegetarian: true),
+          MenuItem(
+              name: 'Pancakes',
+              description: 'Stack of fluffy pancakes with syrup',
+              price: 4.99,
+              isVegetarian: true),
+          MenuItem(
+              name: 'Bacon', description: 'Crispy bacon strips', price: 2.99),
+          MenuItem(
+              name: 'Oatmeal',
+              description: 'Hearty oatmeal with toppings',
+              price: 3.49,
+              isVegetarian: true,
+              isVegan: true),
         ],
         'Lunch': [
-          MenuItem(name: 'Burger', description: 'Classic beef burger with fries', price: 7.99),
-          MenuItem(name: 'Caesar Salad', description: 'Fresh romaine with Caesar dressing', price: 6.99, isVegetarian: true),
-          MenuItem(name: 'Veggie Wrap', description: 'Vegetables in a whole wheat wrap', price: 6.49, isVegetarian: true, isVegan: true),
-          MenuItem(name: 'Pizza Slice', description: 'Cheese or pepperoni pizza slice', price: 3.99, isVegetarian: true),
+          MenuItem(
+              name: 'Burger',
+              description: 'Classic beef burger with fries',
+              price: 7.99),
+          MenuItem(
+              name: 'Caesar Salad',
+              description: 'Fresh romaine with Caesar dressing',
+              price: 6.99,
+              isVegetarian: true),
+          MenuItem(
+              name: 'Veggie Wrap',
+              description: 'Vegetables in a whole wheat wrap',
+              price: 6.49,
+              isVegetarian: true,
+              isVegan: true),
+          MenuItem(
+              name: 'Pizza Slice',
+              description: 'Cheese or pepperoni pizza slice',
+              price: 3.99,
+              isVegetarian: true),
         ],
         'Dinner': [
-          MenuItem(name: 'Grilled Chicken', description: 'Herb-marinated chicken breast', price: 8.99),
-          MenuItem(name: 'Pasta Primavera', description: 'Pasta with seasonal vegetables', price: 7.99, isVegetarian: true),
-          MenuItem(name: 'Steak', description: 'Grilled sirloin steak with sides', price: 12.99),
-          MenuItem(name: 'Tofu Stir Fry', description: 'Tofu with vegetables and rice', price: 7.49, isVegetarian: true, isVegan: true),
+          MenuItem(
+              name: 'Grilled Chicken',
+              description: 'Herb-marinated chicken breast',
+              price: 8.99),
+          MenuItem(
+              name: 'Pasta Primavera',
+              description: 'Pasta with seasonal vegetables',
+              price: 7.99,
+              isVegetarian: true),
+          MenuItem(
+              name: 'Steak',
+              description: 'Grilled sirloin steak with sides',
+              price: 12.99),
+          MenuItem(
+              name: 'Tofu Stir Fry',
+              description: 'Tofu with vegetables and rice',
+              price: 7.49,
+              isVegetarian: true,
+              isVegan: true),
         ],
       },
       rating: 4.2,
@@ -49,22 +96,67 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
       hours: 'Mon-Fri: 7:30 AM - 7:00 PM\nSat: 9:00 AM - 5:00 PM\nSun: Closed',
       mealOptions: {
         'Breakfast': [
-          MenuItem(name: 'Breakfast Sandwich', description: 'Egg and cheese on a bagel', price: 4.99, isVegetarian: true),
-          MenuItem(name: 'Yogurt Parfait', description: 'Yogurt with granola and berries', price: 3.99, isVegetarian: true),
-          MenuItem(name: 'Coffee', description: 'Freshly brewed coffee', price: 1.99, isVegetarian: true, isVegan: true),
-          MenuItem(name: 'Muffin', description: 'Assorted fresh muffins', price: 2.49, isVegetarian: true),
+          MenuItem(
+              name: 'Breakfast Sandwich',
+              description: 'Egg and cheese on a bagel',
+              price: 4.99,
+              isVegetarian: true),
+          MenuItem(
+              name: 'Yogurt Parfait',
+              description: 'Yogurt with granola and berries',
+              price: 3.99,
+              isVegetarian: true),
+          MenuItem(
+              name: 'Coffee',
+              description: 'Freshly brewed coffee',
+              price: 1.99,
+              isVegetarian: true,
+              isVegan: true),
+          MenuItem(
+              name: 'Muffin',
+              description: 'Assorted fresh muffins',
+              price: 2.49,
+              isVegetarian: true),
         ],
         'Lunch': [
-          MenuItem(name: 'Turkey Club', description: 'Turkey, bacon, lettuce, tomato', price: 6.99),
-          MenuItem(name: 'Hummus Plate', description: 'Hummus with pita and vegetables', price: 5.99, isVegetarian: true, isVegan: true),
-          MenuItem(name: 'Soup of the Day', description: 'Daily rotating soup selection', price: 3.99),
-          MenuItem(name: 'Chicken Wrap', description: 'Grilled chicken wrap with veggies', price: 6.49),
+          MenuItem(
+              name: 'Turkey Club',
+              description: 'Turkey, bacon, lettuce, tomato',
+              price: 6.99),
+          MenuItem(
+              name: 'Hummus Plate',
+              description: 'Hummus with pita and vegetables',
+              price: 5.99,
+              isVegetarian: true,
+              isVegan: true),
+          MenuItem(
+              name: 'Soup of the Day',
+              description: 'Daily rotating soup selection',
+              price: 3.99),
+          MenuItem(
+              name: 'Chicken Wrap',
+              description: 'Grilled chicken wrap with veggies',
+              price: 6.49),
         ],
         'Dinner': [
-          MenuItem(name: 'Panini', description: 'Hot pressed sandwich', price: 6.99),
-          MenuItem(name: 'Salad Bowl', description: 'Build your own salad', price: 7.99, isVegetarian: true),
-          MenuItem(name: 'Quesadilla', description: 'Cheese quesadilla with salsa', price: 5.99, isVegetarian: true),
-          MenuItem(name: 'Smoothie', description: 'Fruit smoothie with protein', price: 4.99, isVegetarian: true, isVegan: true),
+          MenuItem(
+              name: 'Panini', description: 'Hot pressed sandwich', price: 6.99),
+          MenuItem(
+              name: 'Salad Bowl',
+              description: 'Build your own salad',
+              price: 7.99,
+              isVegetarian: true),
+          MenuItem(
+              name: 'Quesadilla',
+              description: 'Cheese quesadilla with salsa',
+              price: 5.99,
+              isVegetarian: true),
+          MenuItem(
+              name: 'Smoothie',
+              description: 'Fruit smoothie with protein',
+              price: 4.99,
+              isVegetarian: true,
+              isVegan: true),
         ],
       },
       rating: 4.0,
@@ -77,30 +169,59 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
       hours: 'Mon-Fri: 8:00 AM - 4:00 PM\nSat-Sun: Closed',
       mealOptions: {
         'Breakfast': [
-          MenuItem(name: 'Bagel', description: 'Plain or everything bagel', price: 2.49, isVegetarian: true),
-          MenuItem(name: 'Fruit Cup', description: 'Fresh seasonal fruit', price: 3.49, isVegetarian: true, isVegan: true),
-          MenuItem(name: 'Energy Bar', description: 'Protein or granola bar', price: 1.99, isVegetarian: true),
+          MenuItem(
+              name: 'Bagel',
+              description: 'Plain or everything bagel',
+              price: 2.49,
+              isVegetarian: true),
+          MenuItem(
+              name: 'Fruit Cup',
+              description: 'Fresh seasonal fruit',
+              price: 3.49,
+              isVegetarian: true,
+              isVegan: true),
+          MenuItem(
+              name: 'Energy Bar',
+              description: 'Protein or granola bar',
+              price: 1.99,
+              isVegetarian: true),
         ],
         'Lunch': [
-          MenuItem(name: 'Pre-made Sandwich', description: 'Assorted pre-made sandwiches', price: 5.99),
-          MenuItem(name: 'Chips', description: 'Assorted chips', price: 1.49, isVegetarian: true, isVegan: true),
-          MenuItem(name: 'Bottled Drinks', description: 'Water, soda, juice', price: 1.99, isVegetarian: true, isVegan: true),
+          MenuItem(
+              name: 'Pre-made Sandwich',
+              description: 'Assorted pre-made sandwiches',
+              price: 5.99),
+          MenuItem(
+              name: 'Chips',
+              description: 'Assorted chips',
+              price: 1.49,
+              isVegetarian: true,
+              isVegan: true),
+          MenuItem(
+              name: 'Bottled Drinks',
+              description: 'Water, soda, juice',
+              price: 1.99,
+              isVegetarian: true,
+              isVegan: true),
         ],
         'Dinner': [
-          MenuItem(name: 'Closed', description: 'Not available for dinner', price: 0.0),
+          MenuItem(
+              name: 'Closed',
+              description: 'Not available for dinner',
+              price: 0.0),
         ],
       },
       rating: 3.5,
       currentCapacity: 20,
     ),
   ];
-  
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
   }
-  
+
   @override
   void dispose() {
     _tabController.dispose();
@@ -137,7 +258,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
       ),
     );
   }
-  
+
   Widget _buildLocationsTab() {
     return Column(
       children: [
@@ -169,7 +290,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
             },
           ),
         ),
-        
+
         // Dining locations list
         Expanded(
           child: ListView.builder(
@@ -177,7 +298,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
             itemCount: _diningLocations.length,
             itemBuilder: (context, index) {
               final location = _diningLocations[index];
-              
+
               return Card(
                 margin: const EdgeInsets.only(bottom: 16),
                 clipBehavior: Clip.antiAlias,
@@ -190,15 +311,28 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                     children: [
                       // Location header
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        height: 120,
+                        width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Colors.orange.withOpacity(0.1),
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                          borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(12)),
+                          image: DecorationImage(
+                            image: AssetImage(index == 0
+                                ? 'assets/images/Campus-dininghall.jpg'
+                                : index == 1
+                                    ? 'assets/images/dining_station.jpg'
+                                    : 'assets/images/food.png'),
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.3),
+                              BlendMode.darken,
+                            ),
+                          ),
                         ),
+                        padding: const EdgeInsets.all(16),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(Icons.restaurant, color: Colors.orange),
-                            const SizedBox(width: 8),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,6 +342,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                                     style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
+                                      color: Colors.white,
                                     ),
                                   ),
                                   const SizedBox(height: 4),
@@ -216,28 +351,28 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                                       Icon(
                                         Icons.star,
                                         size: 16,
-                                        color: Colors.amber[700],
+                                        color: Colors.amber[300],
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
                                         location.rating.toString(),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14,
-                                          color: Colors.grey[600],
+                                          color: Colors.white,
                                         ),
                                       ),
                                       const SizedBox(width: 16),
-                                      Icon(
+                                      const Icon(
                                         Icons.people,
                                         size: 16,
-                                        color: Colors.grey[600],
+                                        color: Colors.white70,
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
                                         '${location.currentCapacity}% Full',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14,
-                                          color: Colors.grey[600],
+                                          color: Colors.white,
                                         ),
                                       ),
                                     ],
@@ -249,7 +384,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                           ],
                         ),
                       ),
-                      
+
                       // Location details
                       Padding(
                         padding: const EdgeInsets.all(16),
@@ -282,7 +417,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                               ],
                             ),
                             const SizedBox(height: 16),
-                            
+
                             // Menu preview
                             const Text(
                               'Menu Preview',
@@ -306,7 +441,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
       ],
     );
   }
-  
+
   Widget _buildMealPlanTab() {
     return Center(
       child: Column(
@@ -338,7 +473,8 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Meal plan management will be available in the next update!'),
+                  content: Text(
+                      'Meal plan management will be available in the next update!'),
                 ),
               );
             },
@@ -348,7 +484,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
       ),
     );
   }
-  
+
   Widget _buildCapacityIndicator(int capacity) {
     Color color;
     if (capacity < 50) {
@@ -358,7 +494,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
     } else {
       color = Colors.red;
     }
-    
+
     return Container(
       width: 40,
       height: 40,
@@ -377,17 +513,18 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
       ),
     );
   }
-  
+
   String _getFormattedHours(String hours) {
     // Get only the first line of hours (today's hours)
     final firstLine = hours.split('\n').first;
     return firstLine;
   }
-  
+
   Widget _buildMenuPreview(DiningLocation location, String mealType) {
     final menuItems = location.mealOptions[mealType] ?? [];
-    
-    if (menuItems.isEmpty || (menuItems.length == 1 && menuItems.first.name == 'Closed')) {
+
+    if (menuItems.isEmpty ||
+        (menuItems.length == 1 && menuItems.first.name == 'Closed')) {
       return const Text(
         'Not available for this meal',
         style: TextStyle(
@@ -396,40 +533,43 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
         ),
       );
     }
-    
+
     return Column(
-      children: menuItems.take(3).map((item) => ListTile(
-        contentPadding: EdgeInsets.zero,
-        title: Text(item.name),
-        subtitle: Text(
-          item.description,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (item.isVegetarian)
-              Padding(
-                padding: const EdgeInsets.only(right: 4),
-                child: Icon(
-                  Icons.eco,
-                  size: 16,
-                  color: Colors.green[700],
+      children: menuItems
+          .take(3)
+          .map((item) => ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(item.name),
+                subtitle: Text(
+                  item.description,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            Text(
-              '\$${item.price.toStringAsFixed(2)}',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      )).toList(),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (item.isVegetarian)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 4),
+                        child: Icon(
+                          Icons.eco,
+                          size: 16,
+                          color: Colors.green[700],
+                        ),
+                      ),
+                    Text(
+                      '\$${item.price.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ))
+          .toList(),
     );
   }
-  
+
   void _showSearchDialog() {
     showDialog(
       context: context,
@@ -460,7 +600,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
       ),
     );
   }
-  
+
   void _showLocationDetails(DiningLocation location) {
     showModalBottomSheet(
       context: context,
@@ -494,7 +634,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                         ),
                       ),
                     ),
-                    
+
                     // Location image
                     Container(
                       height: 200,
@@ -512,7 +652,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                       ),
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Location name and rating
                     Row(
                       children: [
@@ -545,7 +685,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                       ],
                     ),
                     const SizedBox(height: 8),
-                    
+
                     // Capacity
                     Row(
                       children: [
@@ -565,7 +705,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                       ],
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Description
                     Text(
                       location.description,
@@ -575,7 +715,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                       ),
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Hours
                     const Text(
                       'Hours',
@@ -593,7 +733,7 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                       ),
                     ),
                     const SizedBox(height: 24),
-                    
+
                     // Menu
                     const Text(
                       'Menu',
@@ -603,14 +743,16 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                       ),
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Meal tabs
                     DefaultTabController(
                       length: _mealTypes.length,
                       child: Column(
                         children: [
                           TabBar(
-                            tabs: _mealTypes.map((type) => Tab(text: type)).toList(),
+                            tabs: _mealTypes
+                                .map((type) => Tab(text: type))
+                                .toList(),
                             labelColor: Colors.orange,
                             unselectedLabelColor: Colors.grey,
                             indicatorColor: Colors.orange,
@@ -619,9 +761,12 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                             height: 300,
                             child: TabBarView(
                               children: _mealTypes.map((type) {
-                                final menuItems = location.mealOptions[type] ?? [];
-                                
-                                if (menuItems.isEmpty || (menuItems.length == 1 && menuItems.first.name == 'Closed')) {
+                                final menuItems =
+                                    location.mealOptions[type] ?? [];
+
+                                if (menuItems.isEmpty ||
+                                    (menuItems.length == 1 &&
+                                        menuItems.first.name == 'Closed')) {
                                   return Center(
                                     child: Text(
                                       'Not available for $type',
@@ -632,11 +777,13 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                                     ),
                                   );
                                 }
-                                
+
                                 return ListView.separated(
-                                  padding: const EdgeInsets.symmetric(vertical: 16),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 16),
                                   itemCount: menuItems.length,
-                                  separatorBuilder: (context, index) => const Divider(),
+                                  separatorBuilder: (context, index) =>
+                                      const Divider(),
                                   itemBuilder: (context, index) {
                                     final item = menuItems[index];
                                     return ListTile(
@@ -659,7 +806,8 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                                         ],
                                       ),
                                       subtitle: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           const SizedBox(height: 4),
                                           Text(item.description),
@@ -668,25 +816,34 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                                             children: [
                                               if (item.isVegetarian)
                                                 Container(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 6,
+                                                      vertical: 2),
                                                   decoration: BoxDecoration(
-                                                    color: Colors.green.withOpacity(0.1),
-                                                    borderRadius: BorderRadius.circular(4),
+                                                    color: Colors.green
+                                                        .withOpacity(0.1),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            4),
                                                   ),
                                                   child: Row(
-                                                    mainAxisSize: MainAxisSize.min,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
                                                     children: [
                                                       Icon(
                                                         Icons.eco,
                                                         size: 12,
-                                                        color: Colors.green[700],
+                                                        color:
+                                                            Colors.green[700],
                                                       ),
                                                       const SizedBox(width: 4),
                                                       Text(
                                                         'Vegetarian',
                                                         style: TextStyle(
                                                           fontSize: 12,
-                                                          color: Colors.green[700],
+                                                          color:
+                                                              Colors.green[700],
                                                         ),
                                                       ),
                                                     ],
@@ -695,25 +852,34 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                                               const SizedBox(width: 8),
                                               if (item.isVegan)
                                                 Container(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 6,
+                                                      vertical: 2),
                                                   decoration: BoxDecoration(
-                                                    color: Colors.green.withOpacity(0.1),
-                                                    borderRadius: BorderRadius.circular(4),
+                                                    color: Colors.green
+                                                        .withOpacity(0.1),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            4),
                                                   ),
                                                   child: Row(
-                                                    mainAxisSize: MainAxisSize.min,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
                                                     children: [
                                                       Icon(
                                                         Icons.spa,
                                                         size: 12,
-                                                        color: Colors.green[700],
+                                                        color:
+                                                            Colors.green[700],
                                                       ),
                                                       const SizedBox(width: 4),
                                                       Text(
                                                         'Vegan',
                                                         style: TextStyle(
                                                           fontSize: 12,
-                                                          color: Colors.green[700],
+                                                          color:
+                                                              Colors.green[700],
                                                         ),
                                                       ),
                                                     ],
@@ -732,9 +898,9 @@ class _DiningScreenState extends State<DiningScreen> with SingleTickerProviderSt
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Action buttons
                     Row(
                       children: [

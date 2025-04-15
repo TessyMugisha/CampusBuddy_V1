@@ -17,7 +17,7 @@ class _MapScreenState extends State<MapScreen> {
       latitude: 37.7749,
       longitude: -122.4194,
       category: 'Academic',
-      imageUrl: 'assets/images/library.jpg',
+      imageUrl: 'assets/images/main_library.webp',
       hours: 'Mon-Fri: 7:00 AM - 11:00 PM\nSat-Sun: 9:00 AM - 9:00 PM',
     ),
     CampusLocation(
@@ -47,7 +47,7 @@ class _MapScreenState extends State<MapScreen> {
       latitude: 37.7760,
       longitude: -122.4170,
       category: 'Dining',
-      imageUrl: 'assets/images/dining_hall.jpg',
+      imageUrl: 'assets/images/Campus-dininghall.jpg',
       hours: 'Mon-Fri: 7:00 AM - 9:00 PM\nSat-Sun: 9:00 AM - 8:00 PM',
     ),
     CampusLocation(
@@ -57,7 +57,7 @@ class _MapScreenState extends State<MapScreen> {
       latitude: 37.7765,
       longitude: -122.4175,
       category: 'Recreation',
-      imageUrl: 'assets/images/rec_center.jpg',
+      imageUrl: 'assets/images/recreation_center.jpg',
       hours: 'Mon-Fri: 6:00 AM - 11:00 PM\nSat-Sun: 8:00 AM - 9:00 PM',
     ),
     CampusLocation(
@@ -73,14 +73,25 @@ class _MapScreenState extends State<MapScreen> {
   ];
 
   String _selectedCategory = 'All';
-  final List<String> _categories = ['All', 'Academic', 'Services', 'Dining', 'Recreation'];
+  final List<String> _categories = [
+    'All',
+    'Academic',
+    'Services',
+    'Dining',
+    'Recreation'
+  ];
 
   List<CampusLocation> get _filteredLocations {
     if (_selectedCategory == 'All') {
       return _locations;
     }
-    return _locations.where((location) => location.category == _selectedCategory).toList();
+    return _locations
+        .where((location) => location.category == _selectedCategory)
+        .toList();
   }
+
+  bool _isSearchVisible = false;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -89,10 +100,21 @@ class _MapScreenState extends State<MapScreen> {
         title: const Text('Campus Map'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.navigation),
+            tooltip: 'Switch to Enhanced Map',
             onPressed: () {
-              // Show search dialog
-              _showSearchDialog();
+              Navigator.pushNamed(context, '/enhanced-map');
+            },
+          ),
+          IconButton(
+            icon: Icon(_isSearchVisible ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                _isSearchVisible = !_isSearchVisible;
+                if (!_isSearchVisible) {
+                  _searchController.clear();
+                }
+              });
             },
           ),
         ],
@@ -127,7 +149,7 @@ class _MapScreenState extends State<MapScreen> {
               },
             ),
           ),
-          
+
           // Map placeholder
           Expanded(
             flex: 2,
@@ -136,38 +158,38 @@ class _MapScreenState extends State<MapScreen> {
               decoration: BoxDecoration(
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(16),
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.map,
-                      size: 64,
-                      color: Colors.blue[700],
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Interactive Campus Map',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Coming Soon: Integration with Google Maps',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
+                image: const DecorationImage(
+                  image: AssetImage('assets/images/campus_map.png'),
+                  fit: BoxFit.cover,
                 ),
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: 16,
+                    left: 16,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Text(
+                        'Interactive Campus Map',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-          
+
           // Location list
           Expanded(
             flex: 3,
@@ -190,14 +212,24 @@ class _MapScreenState extends State<MapScreen> {
                         Container(
                           height: 120,
                           width: double.infinity,
-                          color: Colors.blue.withOpacity(0.2),
-                          child: Center(
-                            child: Icon(
-                              _getCategoryIcon(location.category),
-                              size: 48,
-                              color: Colors.blue[700],
-                            ),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.withOpacity(0.2),
+                            image: location.imageUrl.isNotEmpty
+                                ? DecorationImage(
+                                    image: AssetImage(location.imageUrl),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
                           ),
+                          child: location.imageUrl.isEmpty
+                              ? Center(
+                                  child: Icon(
+                                    _getCategoryIcon(location.category),
+                                    size: 48,
+                                    color: Colors.blue[700],
+                                  ),
+                                )
+                              : null,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(16),
@@ -220,7 +252,8 @@ class _MapScreenState extends State<MapScreen> {
                                       location.category,
                                       style: const TextStyle(fontSize: 12),
                                     ),
-                                    backgroundColor: Colors.blue.withOpacity(0.1),
+                                    backgroundColor:
+                                        Colors.blue.withOpacity(0.1),
                                   ),
                                 ],
                               ),
@@ -328,7 +361,7 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                       ),
                     ),
-                    
+
                     // Location image
                     Container(
                       height: 200,
@@ -336,17 +369,25 @@ class _MapScreenState extends State<MapScreen> {
                       decoration: BoxDecoration(
                         color: Colors.blue.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(12),
+                        image: location.imageUrl.isNotEmpty
+                            ? DecorationImage(
+                                image: AssetImage(location.imageUrl),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
                       ),
-                      child: Center(
-                        child: Icon(
-                          _getCategoryIcon(location.category),
-                          size: 64,
-                          color: Colors.blue[700],
-                        ),
-                      ),
+                      child: location.imageUrl.isEmpty
+                          ? Center(
+                              child: Icon(
+                                _getCategoryIcon(location.category),
+                                size: 64,
+                                color: Colors.blue[700],
+                              ),
+                            )
+                          : null,
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Location name
                     Text(
                       location.name,
@@ -356,14 +397,14 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    
+
                     // Category chip
                     Chip(
                       label: Text(location.category),
                       backgroundColor: Colors.blue.withOpacity(0.1),
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Description
                     const Text(
                       'Description',
@@ -381,7 +422,7 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Hours
                     const Text(
                       'Hours',
@@ -399,7 +440,7 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    
+
                     // Action buttons
                     Row(
                       children: [

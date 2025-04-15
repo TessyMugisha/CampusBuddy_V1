@@ -36,7 +36,7 @@ class EventCard extends StatelessWidget {
                 color: Colors.grey[300],
                 image: event.imageUrl != null
                     ? DecorationImage(
-                        image: NetworkImage(event.imageUrl!),
+                        image: AssetImage(event.imageUrl!),
                         fit: BoxFit.cover,
                       )
                     : null,
@@ -51,7 +51,7 @@ class EventCard extends StatelessWidget {
                     )
                   : null,
             ),
-            
+
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
@@ -59,9 +59,9 @@ class EventCard extends StatelessWidget {
                 children: [
                   // Event Status Indicator
                   _buildEventStatusBadge(event),
-                  
+
                   const SizedBox(height: 8),
-                  
+
                   // Event Title
                   Text(
                     event.title,
@@ -72,9 +72,9 @@ class EventCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  
+
                   const SizedBox(height: 8),
-                  
+
                   // Event Date and Time
                   Row(
                     children: [
@@ -93,9 +93,9 @@ class EventCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 4),
-                  
+
                   Row(
                     children: [
                       Icon(
@@ -113,9 +113,9 @@ class EventCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 8),
-                  
+
                   // Event Location
                   Row(
                     children: [
@@ -138,9 +138,9 @@ class EventCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 8),
-                  
+
                   // Event Categories
                   if (event.categories.isNotEmpty)
                     Row(
@@ -238,7 +238,7 @@ class EventCard extends StatelessWidget {
       // Calculate days until the event
       final now = DateTime.now();
       final daysUntil = event.startTime.difference(now).inDays;
-      
+
       if (daysUntil == 0) {
         return Container(
           padding: const EdgeInsets.symmetric(

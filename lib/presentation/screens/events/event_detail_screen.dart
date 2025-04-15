@@ -132,7 +132,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
           children: [
             // Event image or placeholder
             if (_event?.imageUrl != null && _event!.imageUrl!.isNotEmpty)
-              Image.network(
+              Image.asset(
                 _event!.imageUrl!,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) =>

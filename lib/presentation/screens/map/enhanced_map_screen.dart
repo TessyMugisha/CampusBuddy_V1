@@ -414,6 +414,20 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Building image
+          if (location.imageUrl != null)
+            Container(
+              height: 120,
+              width: double.infinity,
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                image: DecorationImage(
+                  image: AssetImage(location.imageUrl!),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
           Row(
             children: [
               Container(
@@ -638,6 +652,20 @@ class _EnhancedMapScreenState extends State<EnhancedMapScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Location image
+                    if (location.imageUrl != null)
+                      Container(
+                        height: 200,
+                        width: double.infinity,
+                        margin: const EdgeInsets.only(bottom: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          image: DecorationImage(
+                            image: AssetImage(location.imageUrl!),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
                     Text(
                       location.name,
                       style: const TextStyle(
