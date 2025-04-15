@@ -61,26 +61,64 @@ class _HomeScreenState extends State<HomeScreen>
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         actions: [
-          AnimatedTapContainer(
-            onTap: () {
-              // Show notifications
-              _showNotificationsBottomSheet(context);
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  const Icon(Icons.notifications_outlined),
-                  Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
+          Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: AnimatedTapContainer(
+              onTap: () {
+                // Show notifications
+                _showNotificationsBottomSheet(context);
+              },
+              child: Container(
+                margin: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.grey.withOpacity(0.1)
+                      : Colors.grey[800],
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 2,
+                      offset: const Offset(0, 1),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                padding: const EdgeInsets.all(10),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    const Icon(
+                      Icons.notifications_outlined,
+                      size: 24,
+                    ),
+                    Positioned(
+                      top: -2,
+                      right: -2,
+                      child: Container(
+                        width: 18,
+                        height: 18,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            width: 2,
+                          ),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            '3',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -754,6 +792,16 @@ class _HomeScreenState extends State<HomeScreen>
         },
       ),
       QuickActionItem(
+        icon: Icons.smart_toy,
+        label: 'Campus Oracle',
+        iconColor: Colors.deepPurple,
+        isNew: true,
+        onTap: () {
+          // Navigate to Campus Oracle AI chat
+          context.go('/campus-oracle');
+        },
+      ),
+      QuickActionItem(
         icon: Icons.book,
         label: 'Courses',
         iconColor: Colors.indigo,
@@ -788,7 +836,6 @@ class _HomeScreenState extends State<HomeScreen>
         icon: Icons.library_books,
         label: 'Library',
         iconColor: Colors.brown,
-        isNew: true,
         onTap: () {
           // Navigate to library screen
           ScaffoldMessenger.of(context).showSnackBar(
@@ -947,6 +994,7 @@ class _HomeScreenState extends State<HomeScreen>
         publishDate: DateTime.now(),
         category: 'Announcement',
         author: 'University Admin',
+        imageUrl: 'assets/images/main_library.webp',
         tags: ['library', 'finals', 'study resources'],
       ),
       News(
@@ -972,7 +1020,47 @@ class _HomeScreenState extends State<HomeScreen>
         publishDate: DateTime.now().subtract(const Duration(days: 2)),
         category: 'Academic',
         author: 'Registrar\'s Office',
+        imageUrl: 'assets/images/class_registration.jpg',
         tags: ['registration', 'fall semester', 'academic planning'],
+      ),
+      News(
+        id: '4',
+        title: 'Welcome Week Events Announced',
+        summary:
+            'The university has announced the schedule for Welcome Week activities to help new students get acquainted with campus.',
+        content:
+            'The university has announced the schedule for Welcome Week activities to help new students get acquainted with campus. Activities include campus tours, social mixers, club fairs, and introductory workshops. All new students are encouraged to participate to make the most of their campus experience from day one.',
+        publishDate: DateTime.now().subtract(const Duration(days: 3)),
+        category: 'Events',
+        author: 'Student Affairs',
+        imageUrl: 'assets/images/welcome_week.jpg',
+        tags: ['welcome week', 'orientation', 'new students'],
+      ),
+      News(
+        id: '5',
+        title: 'Campus Dining Hall Renovation Complete',
+        summary:
+            'The main dining hall has reopened with expanded seating, new food stations, and extended hours.',
+        content:
+            'The main dining hall has reopened with expanded seating, new food stations, and extended hours. The renovation includes new sustainable features like energy-efficient appliances and a composting system. Students can enjoy a wider variety of food options including more vegetarian, vegan, and allergen-free choices.',
+        publishDate: DateTime.now().subtract(const Duration(days: 4)),
+        category: 'Campus Life',
+        author: 'Dining Services',
+        imageUrl: 'assets/images/Campus-dininghall.jpg',
+        tags: ['dining hall', 'renovation', 'campus food'],
+      ),
+      News(
+        id: '6',
+        title: 'Spring Concert Series Begins This Friday',
+        summary:
+            'The annual Spring Concert Series kicks off this Friday with local bands and performers at the Outdoor Amphitheater.',
+        content:
+            'The annual Spring Concert Series kicks off this Friday with local bands and performers at the Outdoor Amphitheater. The concert series will run every Friday evening for the next six weeks, featuring a variety of musical styles from jazz to indie rock. Food trucks and refreshments will be available. Students can attend for free with their student ID.',
+        publishDate: DateTime.now().subtract(const Duration(days: 5)),
+        category: 'Events',
+        author: 'Student Activities Board',
+        imageUrl: 'assets/images/spring_singevent.jpeg',
+        tags: ['concert', 'music', 'spring events'],
       ),
     ];
   }
@@ -1292,6 +1380,7 @@ class _HomeScreenState extends State<HomeScreen>
         'time': '2 hours ago',
         'icon': Icons.assignment,
         'color': Colors.orange,
+        'isUnread': true,
       },
       {
         'title': 'Event Reminder',
@@ -1299,6 +1388,7 @@ class _HomeScreenState extends State<HomeScreen>
         'time': '3 hours ago',
         'icon': Icons.event,
         'color': Colors.blue,
+        'isUnread': true,
       },
       {
         'title': 'Grade Posted',
@@ -1306,93 +1396,210 @@ class _HomeScreenState extends State<HomeScreen>
         'time': '1 day ago',
         'icon': Icons.school,
         'color': Colors.green,
+        'isUnread': true,
       },
     ];
 
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Handle
-            Container(
-              margin: const EdgeInsets.only(top: 8, bottom: 16),
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Handle
+              Container(
+                margin: const EdgeInsets.only(top: 8, bottom: 16),
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
-            ),
 
-            // Title
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Notifications',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+              // Title with badge indicator
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Text(
+                          'Notifications',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Text(
+                            '3 new',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _showComingSoonSnackbar('Mark all as read');
-                    },
-                    child: const Text('Mark all as read'),
-                  ),
-                ],
+                    TextButton.icon(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _showComingSoonSnackbar('Mark all as read');
+                      },
+                      icon: const Icon(Icons.done_all, size: 16),
+                      label: const Text('Mark all as read'),
+                    ),
+                  ],
+                ),
               ),
-            ),
 
-            // Notifications list
-            Expanded(
-              child: ListView.separated(
-                itemCount: notifications.length,
-                separatorBuilder: (context, index) => const Divider(height: 1),
-                itemBuilder: (context, index) {
-                  final notification = notifications[index];
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: notification['color'] as Color,
-                      child: Icon(
-                        notification['icon'] as IconData,
-                        color: Colors.white,
-                        size: 20,
+              // Filter tabs
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                child: Row(
+                  children: [
+                    _buildNotificationFilterChip('All', true),
+                    const SizedBox(width: 8),
+                    _buildNotificationFilterChip('Unread', false),
+                    const SizedBox(width: 8),
+                    _buildNotificationFilterChip('Academic', false),
+                    const SizedBox(width: 8),
+                    _buildNotificationFilterChip('Events', false),
+                  ],
+                ),
+              ),
+
+              // Notifications list
+              Expanded(
+                child: ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  itemCount: notifications.length,
+                  separatorBuilder: (context, index) =>
+                      const Divider(height: 1, indent: 60),
+                  itemBuilder: (context, index) {
+                    final notification = notifications[index];
+                    return InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                        // Handle notification tap based on type
+                        if (notification['icon'] == Icons.assignment) {
+                          _showComingSoonSnackbar('Assignments');
+                        } else if (notification['icon'] == Icons.event) {
+                          context.go('/events');
+                        } else if (notification['icon'] == Icons.school) {
+                          context.go('/courses');
+                        }
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: notification['isUnread'] == true
+                              ? AppTheme.primaryColor.withOpacity(0.05)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: notification['color'] as Color,
+                              radius: 20,
+                              child: Icon(
+                                notification['icon'] as IconData,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        notification['title'] as String,
+                                        style: TextStyle(
+                                          fontWeight:
+                                              notification['isUnread'] == true
+                                                  ? FontWeight.bold
+                                                  : FontWeight.normal,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text(
+                                        notification['time'] as String,
+                                        style: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    notification['message'] as String,
+                                    style: const TextStyle(
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    title: Text(notification['title'] as String),
-                    subtitle: Text(notification['message'] as String),
-                    trailing: Text(
-                      notification['time'] as String,
-                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                      // Handle notification tap based on type
-                      if (notification['icon'] == Icons.assignment) {
-                        _showComingSoonSnackbar('Assignments');
-                      } else if (notification['icon'] == Icons.event) {
-                        context.go('/events');
-                      } else if (notification['icon'] == Icons.school) {
-                        context.go('/courses');
-                      }
-                    },
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
+    );
+  }
+
+  Widget _buildNotificationFilterChip(String label, bool isSelected) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: isSelected
+            ? AppTheme.primaryColor
+            : AppTheme.primaryColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: isSelected ? Colors.white : AppTheme.primaryColor,
+          fontWeight: FontWeight.bold,
+          fontSize: 12,
+        ),
+      ),
     );
   }
 
@@ -1564,9 +1771,16 @@ class NewsDetailBottomSheet extends StatelessWidget {
       maxChildSize: 0.9,
       minChildSize: 0.5,
       builder: (_, controller) => Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              spreadRadius: 1,
+            ),
+          ],
         ),
         padding: const EdgeInsets.all(16),
         child: ListView(
@@ -1591,38 +1805,181 @@ class NewsDetailBottomSheet extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              newsItem.formattedDate,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[600],
-              ),
+            Row(
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: newsItem.categoryColor.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(newsItem.categoryIcon,
+                          size: 14, color: newsItem.categoryColor),
+                      const SizedBox(width: 4),
+                      Text(
+                        newsItem.category,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: newsItem.categoryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  newsItem.formattedDate,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             if (newsItem.imageUrl != null && newsItem.imageUrl!.isNotEmpty)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  newsItem.imageUrl!,
-                  height: 200,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    newsItem.imageUrl!,
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        height: 200,
+                        width: double.infinity,
+                        color: Colors.grey[300],
+                        child: const Center(
+                          child: Icon(Icons.image_not_supported,
+                              size: 50, color: Colors.grey),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-            const SizedBox(height: 16),
-            SingleChildScrollView(
-              child: Text(
-                newsItem.content,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[800],
-                  height: 1.5,
-                ),
+            const SizedBox(height: 24),
+            Text(
+              "By ${newsItem.author}",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[700],
               ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              newsItem.content,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[800],
+                height: 1.6,
+              ),
+            ),
+            const SizedBox(height: 32),
+            // Tags
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: newsItem.tags
+                  .map((tag) => Chip(
+                        label: Text(
+                          '#$tag',
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                        backgroundColor: Colors.grey[100],
+                        padding: EdgeInsets.zero,
+                      ))
+                  .toList(),
+            ),
+            const SizedBox(height: 24),
+            // Action buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildActionButton(
+                  context,
+                  Icons.share_outlined,
+                  'Share',
+                  () => _showShareFeatureSnackbar(context),
+                ),
+                _buildActionButton(
+                  context,
+                  Icons.bookmark_border_outlined,
+                  'Save',
+                  () => _showSaveFeatureSnackbar(context),
+                ),
+                _buildActionButton(
+                  context,
+                  Icons.open_in_new,
+                  'Read Full Article',
+                  () => _showFullArticleSnackbar(context),
+                ),
+              ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildActionButton(
+    BuildContext context,
+    IconData icon,
+    String label,
+    VoidCallback onTap,
+  ) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 24),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showShareFeatureSnackbar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Share feature coming soon!')),
+    );
+  }
+
+  void _showSaveFeatureSnackbar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Save feature coming soon!')),
+    );
+  }
+
+  void _showFullArticleSnackbar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Full article feature coming soon!')),
     );
   }
 }
