@@ -1,6 +1,60 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
- 
+# Implementation Plan Template for New Features
+
+This template provides a step-by-step guide for adding new features to the Campus Buddy application, following its Clean Architecture structure.
+
+**Feature Name:** [e.g., Course Assignment Tracking]
+
+**1. Define Requirements & Scope:**
+   - What are the core functionalities?
+   - What data is needed?
+   - What are the UI requirements?
+   - Are there any external integrations?
+
+**2. Domain Layer (`lib/domain/`)**
+   - [ ] **Entities:** Define or update necessary business objects in `lib/domain/entities/`. (e.g., `Assignment` entity with properties like `id`, `courseId`, `title`, `dueDate`, `status`).
+   - [ ] **Repository Interface:** Define the abstract contract for data operations in `lib/domain/repositories/` (if the folder exists) or alongside use cases. (e.g., `abstract class AssignmentRepository { Future<List<Assignment>> getAssignments(String courseId); Future<void> addAssignment(Assignment assignment); ... }`).
+   - [ ] **Use Cases:** Create specific use cases in `lib/domain/usecases/` for each business operation. (e.g., `GetAssignmentsUseCase(this.repository)`, `AddAssignmentUseCase(this.repository)`). Inject the repository interface.
+
+**3. Data Layer (`lib/data/`)**
+   - [ ] **Models:** Create Data Transfer Objects (DTOs) in `lib/data/models/` if needed for data source interaction (e.g., `AssignmentModel` with `fromJson`/`toJson`). Include methods to convert between Model and Entity.
+   - [ ] **Data Source(s):** Implement concrete data fetching/storage logic in `lib/data/datasources/` (or `lib/data/services/`). (e.g., `FirebaseAssignmentDataSource`, `LocalAssignmentDataSource`).
+   - [ ] **Repository Implementation:** Create the concrete implementation of the domain repository interface in `lib/data/repositories/`. (e.g., `AssignmentRepositoryImpl implements AssignmentRepository`). Inject necessary Data Source(s). Implement methods, handle data source exceptions, and convert Models to Entities before returning.
+
+**4. Dependency Injection Setup:**
+   - [ ] Register the new Repository implementation, Data Source(s), and Use Case(s) with the chosen dependency injection solution (e.g., update service locator setup if using `get_it`).
+
+**5. Logic/Presentation Layer (`lib/logic/` or `lib/presentation/`)**
+   - [ ] **BLoC:** Create a new BLoC in `lib/logic/blocs/` or `lib/presentation/blocs/` (decide based on complexity). (e.g., `AssignmentBloc`).
+     - [ ] Define Events (`assignment_event.dart`).
+     - [ ] Define States (`assignment_state.dart`).
+     - [ ] Implement the BLoC logic, injecting the necessary Use Case(s).
+     - [ ] Handle events, call use cases, and emit appropriate states (Loading, Loaded, Error).
+   - [ ] **Register BLoC:** Provide the BLoC using `BlocProvider` in the widget tree, likely near where it's needed or in `main.dart` if it's global.
+
+**6. Presentation Layer - UI (`lib/presentation/`)**
+   - [ ] **Screens:** Create new screen(s) in `lib/presentation/screens/` (e.g., `AssignmentsScreen`).
+   - [ ] **Widgets/Components:** Create necessary reusable widgets or components in `lib/presentation/widgets/` or `lib/presentation/components/` (e.g., `AssignmentList`, `AssignmentCard`).
+   - [ ] **Connect UI to BLoC:** Use `BlocBuilder`, `BlocListener`, or `BlocConsumer` to react to BLoC states and display data or feedback.
+   - [ ] **Trigger BLoC Events:** Dispatch events from the UI based on user interactions (e.g., button taps, form submissions).
+
+**7. Navigation (`lib/config/router/app_router.dart`)**
+   - [ ] Add new `GoRoute` definition(s) for the new screen(s).
+   - [ ] Update `ShellRoute` or add nested routes as needed.
+   - [ ] Implement navigation triggers (e.g., `context.go('/assignments')`).
+
+**8. Testing:**
+   - [ ] Write unit tests for BLoCs, Use Cases, and Repositories (mocking dependencies).
+   - [ ] Write widget tests for key UI components and screens.
+   - [ ] Consider integration tests for critical flows.
+
+**9. Documentation:**
+   - [ ] Add Dart documentation comments (`///`) to new public APIs.
+   - [ ] Update high-level architecture documents (`docs/`) if the changes are significant.
+
+**Notes/Considerations:**
+   - [Any specific challenges, edge cases, or future improvements related to this feature] 

@@ -1,6 +1,40 @@
----
-description: 
-globs: 
-alwaysApply: false
----
- 
+# Frontend Guidelines for Campus Buddy
+
+## UI Framework
+- **Framework:** Flutter
+- **Design System:** Material 3 (`useMaterial3: true`)
+- **Theme:** Defined in `lib/config/theme/theme.dart`. Supports both light and dark modes.
+
+## State Management
+- **Pattern:** BLoC (flutter_bloc)
+- **Placement:**
+    - UI-specific BLoCs (handling UI events, simple state transformations) go in `lib/presentation/blocs/`. Example: `EventsBloc`.
+    - Business logic BLoCs (more complex logic, coordinating use cases) should ideally go in `lib/logic/blocs/`. *Note: Current structure may have some overlap, aim for this separation going forward.*
+- **Events & States:** Define clearly in separate files within the BLoC's directory (e.g., `events_event.dart`, `events_state.dart`).
+- **Access:** Use `BlocProvider` for creation and `BlocBuilder` / `BlocListener` / `BlocConsumer` for reacting to state changes.
+
+## Navigation
+- **Package:** GoRouter (`go_router`)
+- **Configuration:** Defined in `lib/config/router/app_router.dart`.
+- **Structure:**
+    - Use `ShellRoute` for the main application structure with the bottom navigation bar (`ScaffoldWithBottomNavBar`).
+    - Define root routes for splash/auth screens outside the shell.
+    - Use nested routes for detail screens (e.g., `/events/:id`).
+- **Passing Data:** Use path parameters (e.g., `:id`) or query parameters. Avoid passing complex objects directly through navigation arguments if possible; prefer passing IDs and fetching data in the target screen/BLoC.
+- **Legacy Router:** `lib/config/routes.dart` exists but should be considered deprecated. New navigation should use GoRouter.
+
+## Widgets and Screens
+- **Placement:**
+    - Screens (representing full pages) go in `lib/presentation/screens/`.
+    - Reusable widgets go in `lib/presentation/widgets/`.
+    - Smaller, potentially feature-specific UI components go in `lib/presentation/components/`.
+- **Naming:** Use descriptive names (e.g., `UpcomingEventsList`, `EventDetailCard`).
+- **Styling:** Adhere to the theme defined in `theme.dart`. Use `Theme.of(context)` to access theme properties. Avoid hardcoding colors or text styles directly in widgets.
+- **Responsiveness:** Design primarily for portrait mode on mobile devices, as per `SystemChrome.setPreferredOrientations` in `main.dart`.
+
+## Best Practices
+- Keep widgets small and focused on a single responsibility.
+- Prefer `const` constructors for widgets where possible.
+- Use `BuildContext` correctly; avoid storing it in stateful widgets' state.
+- Separate UI logic from business logic (BLoC/Use Cases).
+- Follow Flutter's official effective Dart guidelines. 

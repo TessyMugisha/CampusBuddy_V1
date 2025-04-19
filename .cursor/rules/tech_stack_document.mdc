@@ -1,6 +1,42 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
- 
+# Campus Buddy Technology Stack
+
+This document lists the key technologies, frameworks, and libraries used in the Campus Buddy project.
+
+## Core Framework
+- **[Flutter](mdc:https:/flutter.dev)**: UI software development kit created by Google, used for building natively compiled applications for mobile, web, and desktop from a single codebase.
+- **[Dart](mdc:https:/dart.dev)**: Programming language used by Flutter.
+
+## State Management
+- **[flutter_bloc](mdc:https:/pub.dev/packages/flutter_bloc)** / **[bloc](mdc:https:/pub.dev/packages/bloc)**: Predictable state management library that helps implement the BLoC (Business Logic Component) design pattern.
+
+## Navigation
+- **[go_router](mdc:https:/pub.dev/packages/go_router)**: Declarative routing package for Flutter that uses the Router API to provide a convenient, URL-based API for navigating between screens.
+
+## UI & Design
+- **[Material Design 3](mdc:https:/m3.material.io)**: The application utilizes Flutter's implementation of Material 3 (`useMaterial3: true`).
+- **Core Flutter Widgets**: Standard Flutter widgets for layout, text, images, icons, etc.
+
+## Services & Utilities
+- **[flutter_local_notifications](mdc:https:/pub.dev/packages/flutter_local_notifications)**: Plugin for displaying local notifications.
+- **Dependency Injection**: (Specific library not explicitly identified, potentially manual injection via constructors, `provider`, or `get_it`). Recommend standardizing if not already done.
+- **HTTP Client**: (Specific library not explicitly identified, likely `http` or `dio` would be used in the Data layer for network requests).
+- **JSON Serialization**: Dart's built-in `dart:convert` or potentially code generation libraries like `json_serializable` (check `pubspec.yaml` and data models).
+
+## Development & Tooling
+- **IDE**: Visual Studio Code with Flutter/Dart extensions, or Android Studio/IntelliJ.
+- **Version Control**: Git (Hosted on GitHub: `https://github.com/Jonathan-321/CampusBuddy-1.git`).
+- **Build System**: Flutter CLI (`flutter build`, `flutter run`).
+- **Linter**: Dart Analyze (configured via `analysis_options.yaml`).
+- **Formatter**: `dart format`.
+
+## Potential Backend/Infrastructure (Inferred - Needs Verification)
+- **Authentication Provider**: (e.g., Firebase Auth, custom backend JWT)
+- **Database/API**: (e.g., Firebase Firestore, REST API, GraphQL) - Needed for dynamic data like events, courses, etc.
+- **Push Notifications Service**: (e.g., Firebase Cloud Messaging - FCM)
+
+*Note: Some dependencies, especially for data handling (HTTP, JSON, DI), are inferred and should be verified by checking `pubspec.yaml` and the Data layer implementations.* 

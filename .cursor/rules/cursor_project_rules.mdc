@@ -1,6 +1,50 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
- 
+# Global Project Rules for Campus Buddy
+
+These rules apply across the entire codebase.
+
+## General
+- **Language:** Dart (with Flutter framework)
+- **Style Guide:** Follow the official [Effective Dart](mdc:https:/dart.dev/guides/language/effective-dart) guidelines (Style, Documentation, Usage, Design).
+- **Linter:** Adhere to rules defined in `analysis_options.yaml`. Address linter warnings and errors promptly.
+- **Formatting:** Use `dart format` (or the IDE's equivalent) to ensure consistent code formatting.
+- **Null Safety:** The project uses Dart's sound null safety. Avoid using `!` (bang operator) unless you are absolutely certain a value is non-null. Prefer null-aware operators (`?.`, `??`, `?..`) and checks.
+
+## Naming Conventions
+- **Files:** `snake_case.dart` (e.g., `events_bloc.dart`, `auth_repository.dart`).
+- **Classes & Enums:** `PascalCase` (e.g., `EventsBloc`, `AuthStatus`).
+- **Methods & Variables:** `camelCase` (e.g., `loadEvents`, `currentUser`).
+- **Constants:** `camelCase` or `UPPER_SNAKE_CASE` (prefer `camelCase` for non-static constants, `UPPER_SNAKE_CASE` for top-level or static constants).
+- **Private Members:** Prefix with an underscore (`_`) (e.g., `_eventsUseCase`, `_onLoadEvents`).
+- **BLoC:** Suffix classes with `Bloc`, events with `Event`, states with `State` (e.g., `EventsBloc`, `LoadEvents`, `EventsLoaded`).
+- **Use Cases:** Suffix classes with `UseCase` (e.g., `EventsUseCase`).
+- **Repositories:** Suffix interfaces/implementations with `Repository` (e.g., `EventsRepository`, `EventsRepositoryImpl`).
+- **Models:** Suffix data models with `Model` (e.g., `EventModel`).
+- **Entities:** Use plain descriptive names (e.g., `Event`, `User`).
+
+## Documentation
+- **Style:** Use Dart documentation comments (`///`).
+- **Public API:** Document all public classes, methods, and properties. Explain *what* they do and *why*.
+- **Complex Logic:** Add comments (`//`) to explain non-obvious code sections or algorithms.
+- **File Headers:** Add a header comment (`///`) to important files explaining their overall purpose and role in the architecture (as demonstrated in `main.dart`, `app_router.dart`, `events_bloc.dart`).
+- **Architecture Docs:** Keep high-level documentation (`docs/` directory) updated as the codebase evolves.
+
+## Error Handling
+- **Repositories/Data Sources:** Catch specific exceptions from data sources (network errors, parsing errors, etc.) and either handle them or re-throw them as custom, more specific exceptions (defined potentially in the Domain layer).
+- **Use Cases:** Propagate errors received from repositories. Can potentially map repository errors to domain-specific errors if needed.
+- **BLoCs:** Handle errors coming from Use Cases. Emit specific error states (e.g., `EventsError`) containing relevant error information (e.g., error message).
+- **UI:** Use `BlocListener` or `BlocConsumer` to display user-friendly error messages (e.g., Snackbars, Dialogs) based on error states. Avoid showing raw exception messages to the user.
+
+## Imports
+- Use relative imports for files within the `lib` directory.
+- Use `package:` imports for external dependencies and Flutter SDK.
+- Order imports: `dart:` imports first, then `package:` imports, then relative imports. Keep imports sorted alphabetically within each group.
+
+## Dependencies
+- Manage dependencies in `pubspec.yaml`.
+- Keep dependencies up-to-date where feasible, checking for breaking changes.
+- Avoid adding unnecessary dependencies. 

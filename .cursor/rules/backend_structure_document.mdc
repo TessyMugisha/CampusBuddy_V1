@@ -1,6 +1,47 @@
----
-description: 
-globs: 
-alwaysApply: false
----
- 
+# Backend Structure Guidelines for Campus Buddy (Clean Architecture)
+
+This document outlines the structure and patterns for the non-UI layers (Domain, Data) based on Clean Architecture.
+
+## Core Layers
+
+1.  **Domain Layer (`lib/domain/`)**
+    *   **Purpose:** Contains the core business logic and rules, independent of any framework or infrastructure.
+    *   **Contents:**
+        *   `entities/`: Pure business objects representing core concepts (e.g., `Event`, `Course`, `User`). Should contain only data and potentially simple validation/logic inherent to the object itself. Should **not** depend on any other layer.
+        *   `usecases/`: Define specific application operations or business flows (e.g., `LoadEvents`, `LoginUser`). Use cases orchestrate data flow by interacting with Repository *interfaces*. They depend only on entities and repository interfaces within the domain layer.
+        *   `repositories/` (Interfaces Only): Abstract definitions (interfaces/abstract classes) of data operations needed by use cases (e.g., `EventsRepository`, `AuthRepository`). These define the *contract* for data retrieval and storage, hiding implementation details.
+
+2.  **Data Layer (`lib/data/`)**
+    *   **Purpose:** Implements the data handling logic defined by the domain layer's repository interfaces. Connects to external data sources.
+    *   **Contents:**
+        *   `repositories/` (Implementations): Concrete implementations of the repository interfaces defined in the domain layer (e.g., `EventsRepositoryImpl`). These classes depend on Data Sources.
+        *   `models/`: Data Transfer Objects (DTOs) used for interacting with data sources (e.g., JSON parsing, database mapping). Models often have `fromJson`/`toJson` methods. They might extend or map to/from Domain Entities.
+        *   `datasources/` (or `services/` within `lib/data/`): Concrete classes responsible for fetching/storing data from specific sources (e.g., `FirebaseEventsDataSource`, `LocalPreferencesAuthDataSource`). Repositories use these.
+
+3.  **Services Layer (`lib/services/`)**
+    *   **Purpose:** Contains application-wide services not directly tied to a specific feature's data flow but potentially used across layers (e.g., `NotificationService`).
+
+## Dependency Rule
+- **Strict:** Dependencies flow inwards. `Presentation -> Logic -> Domain <- Data`.
+- The **Domain layer** must **not** depend on any other layer (Presentation, Logic, Data, Services, Flutter SDK).
+- The **Data layer** depends only on the **Domain layer** (for interfaces and entities) and external data packages.
+- The **Presentation layer** depends on **Logic** and potentially **Domain** (for entities if needed directly, though preferably via BLoC states).
+- The **Logic layer** depends on the **Domain layer**.
+
+## Data Flow Pattern (Example: Loading Events)
+1.  `EventsScreen` (UI) triggers `LoadEvents` event on `EventsBloc` (Presentation BLoC).
+2.  `EventsBloc` calls `eventsUseCase.getAllEvents()` (`eventsUseCase` is injected).
+3.  `EventsUseCase` (Domain) calls `eventsRepository.getAllEvents()` (`eventsRepository` interface is injected).
+4.  Dependency Injection provides `EventsRepositoryImpl` (Data) which implements the interface.
+5.  `EventsRepositoryImpl` calls `remoteDataSource.fetchEvents()`.
+6.  `RemoteDataSource` fetches raw data (e.g., JSON) and converts it to `EventModel` (Data Model).
+7.  `EventsRepositoryImpl` converts `EventModel` to `Event` (Domain Entity).
+8.  The `List<Event>` flows back up: `RepoImpl -> UseCase -> BLoC`.
+9.  `EventsBloc` emits `EventsLoaded` state containing the `List<Event>`.
+10. `EventsScreen` rebuilds based on the new state.
+
+## Best Practices
+- Strictly adhere to the dependency rule.
+- Use dependency injection (e.g., `get_it`, `provider`, or manual injection via constructors) to provide implementations (Repositories, DataSources, UseCases) to dependent classes.
+- Repositories should return Domain Entities, not Data Models.
+- Handle errors gracefully, typically catching exceptions in the Data layer and potentially mapping them to custom domain exceptions or result types returned by repositories/use cases. 

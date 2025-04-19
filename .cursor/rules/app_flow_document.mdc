@@ -1,6 +1,59 @@
----
-description: 
-globs: 
-alwaysApply: false
----
- 
+# Campus Buddy Application Flow
+
+This document describes the high-level user flows and navigation within the application.
+
+## Core Components Involved
+- **`main.dart`:** App initialization, BLoC providers, Theme setup, Router initialization.
+- **`lib/config/router/app_router.dart`:** Defines all navigation routes using GoRouter.
+- **`ScaffoldWithBottomNavBar` (in `app_router.dart`):** Provides the main app shell with bottom navigation.
+- **BLoCs (various):** Manage state for different features (e.g., `AuthBloc`, `EventsBloc`).
+- **Screens (various):** UI for different application pages.
+
+## Main Flows
+
+1.  **App Startup & Authentication:**
+    *   `main()` initializes Flutter, services (Notifications), and runs `MyApp`.
+    *   `MyApp` sets up `MultiBlocProvider` (incl. `AuthBloc`) and `MaterialApp.router` using `AppRouter.router`.
+    *   `AuthBloc` is initialized and `AuthCheckRequested` event is added.
+    *   `AppRouter`'s initial location is `/`, which maps to `SplashScreen`.
+    *   `SplashScreen` likely listens to `AuthBloc` state.
+    *   `AuthBloc` checks authentication status (e.g., checks local storage/secure storage via `AuthUseCase` -> `AuthRepository`).
+    *   **If Authenticated:** `AuthBloc` emits `Authenticated` state. `SplashScreen` (or a listener) navigates to `/home` (using `context.go('/home')`).
+    *   **If Unauthenticated:** `AuthBloc` emits `Unauthenticated` state. `SplashScreen` navigates to `/login`.
+    *   **Login Flow:**
+        *   User interacts with `LoginScreen`.
+        *   `LoginScreen` adds `LoginRequested` event to `AuthBloc` with credentials.
+        *   `AuthBloc` calls `AuthUseCase.login()`, which interacts with `AuthRepository`.
+        *   On success, `AuthBloc` emits `Authenticated` state. `LoginScreen` navigates to `/home`.
+        *   On failure, `AuthBloc` emits `AuthFailure` state. `LoginScreen` shows error.
+    *   **Signup Flow:** Similar to Login, using `SignupScreen` and `SignupRequested` event.
+
+2.  **Main Application Navigation (Post-Authentication):**
+    *   User lands on a screen within the `ShellRoute` (typically `/home`).
+    *   `ScaffoldWithBottomNavBar` displays the bottom navigation bar.
+    *   Tapping a bottom navigation item:
+        *   Calls `_goOtherTab` in `_ScaffoldWithBottomNavBarState`.
+        *   Updates the `_currentIndex`.
+        *   Uses `context.go()` to navigate to the corresponding route (e.g., `/events`, `/courses`).
+    *   The `ShellRoute` displays the appropriate screen (`HomeScreen`, `EventsScreen`, etc.) based on the current route.
+
+3.  **Feature Flow (Example: Viewing Event Details):**
+    *   User is on `EventsScreen` (`/events`).
+    *   `EventsScreen` displays a list of events (data likely loaded by `EventsBloc` via `LoadEvents` on initialization).
+    *   User taps on a specific event.
+    *   UI triggers navigation: `context.go('/events/:id')`, passing the specific event ID.
+    *   `AppRouter` matches `/events/:id` and builds `EventDetailScreen`, passing the `eventId` from `state.pathParameters`.
+    *   `EventDetailScreen` is built.
+    *   `EventDetailScreen` (or its associated BLoC, if it has one) likely dispatches an event like `LoadEventDetails(eventId)`.
+    *   The corresponding BLoC/UseCase/Repository fetches the specific event data.
+    *   `EventDetailScreen` displays the details once the state updates.
+
+## Key Navigation Points
+- **Entry:** `/` (Splash Screen)
+- **Auth:** `/login`, `/signup`
+- **Main Tabs:** `/home`, `/events`, `/courses`, `/map`, `/profile` (plus others like `/schedule`, `/assignments`, `/dining`, `/transit` are defined but might not be in the bottom bar currently).
+- **Details:** `/events/:id`, `/courses/:id`
+
+## Data Loading
+- BLoCs are typically responsible for loading data when a screen is initialized or a specific event occurs.
+- Initial data load often happens when the BLoC is created (e.g., `EventsBloc` adds `LoadEvents` in its constructor or provider). 

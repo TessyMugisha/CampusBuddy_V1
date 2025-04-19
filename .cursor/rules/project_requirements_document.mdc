@@ -1,6 +1,69 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
- 
+# Campus Buddy Project Requirements (Inferred)
+
+This document outlines the functional and non-functional requirements of the Campus Buddy application, as inferred from the existing codebase structure and components.
+
+## Functional Requirements
+
+### Core Features:
+- **User Authentication:**
+    - User signup
+    - User login
+    - Session management (remembering login state)
+- **Home Screen:**
+    - Dashboard view (content TBD based on `HomeScreen` implementation)
+    - Likely displays summarized information or quick access to other features.
+- **Events:**
+    - View a list of all campus events (`EventsScreen`).
+    - View upcoming events (potentially featured on Home or Events screen).
+    - View details of a specific event (`EventDetailScreen`).
+    - Search/Filter events (based on `EventsBloc` events like `SearchEvents`, `LoadEventsByCategory`, `LoadEventsByDateRange`).
+    - Add events to personal calendar (based on `AddEventToCalendar` event).
+    - Refresh event data.
+- **Courses:**
+    - View a list of courses (`CoursesScreen`).
+    - View details of a specific course (`CourseDetailScreen`).
+- **Campus Map:**
+    - Display a campus map (`MapScreen`).
+    - (Potential features inferred from `MapUseCase`/`MapRepository`: location search, building info, routing).
+- **Campus Directory:**
+    - Search/View campus directory (faculty, staff, departments - inferred from `DirectoryUseCase`/`DirectoryRepository`).
+- **Dining Information:**
+    - View dining hall locations and potentially menus (inferred from `DiningScreen`, `DiningUseCase`/`DiningRepository`).
+- **Emergency Information:**
+    - Access emergency contacts and procedures (inferred from `EmergencyUseCase`/`EmergencyRepository`).
+- **User Profile:**
+    - View and potentially edit user profile information (`ProfileScreen`).
+- **Class Schedule:**
+    - View personal class schedule (`ScheduleScreen`).
+- **Assignments:**
+    - View assignments (`AssignmentsScreen`) - (Implementation details TBD).
+- **Transit Information:**
+    - View campus transit information (`TransitScreen`) - (Implementation details TBD).
+
+### Common Functionality:
+- **Navigation:** Bottom navigation bar for main sections, ability to navigate to detail screens.
+- **Notifications:** Receive notifications (setup via `NotificationService`).
+
+## Non-Functional Requirements
+
+- **Architecture:** Must follow Clean Architecture principles (Domain, Data, Presentation separation).
+- **State Management:** Must use BLoC pattern for managing state.
+- **Platform:** Mobile Application (Flutter), primarily targeting portrait mode.
+- **UI:** Must use Material 3 design system.
+- **Theme:** Must support both Light and Dark themes based on system settings.
+- **Code Quality:** Must adhere to Effective Dart guidelines and project linting rules (`analysis_options.yaml`).
+- **Maintainability:** Code should be well-documented and structured for easy understanding and modification.
+- **Performance:** Application should be reasonably performant and responsive (specific metrics TBD).
+- **Error Handling:** Graceful error handling should be implemented, providing feedback to the user without crashing.
+
+## Assumptions
+- A backend system or set of APIs exists to provide data for events, courses, map, dining, etc. (The exact nature of the backend is not fully clear from the frontend code alone).
+- User authentication is handled via a backend service.
+- Notification service integrates with a push notification provider (e.g., FCM).
+
+*Note: This document is based on the current code structure. Actual project requirements may differ or be more detailed.* 

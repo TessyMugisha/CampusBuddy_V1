@@ -22,19 +22,26 @@ class ClaudeApiService {
   });
 
   /// Send a message to Claude API with conversation history for context
-  Future<Map<String, dynamic>> sendMessage({
-    required String userMessage,
-    required List<Map<String, String>> messageHistory,
-    double temperature = 0.7,
-    int maxTokens = 1024,
-    String systemPrompt = 'You are Campus Oracle, a helpful AI assistant for university students. '
-        'You specialize in providing information about school events, class schedules, '
-        'and the campus directory including places and contact numbers. '
-        'Be informative about campus locations, upcoming events, course schedules, and who to contact for various services. '
-        'Create realistic examples when needed about classes, courses, events, and campus locations. '
-        'Be concise, friendly, and helpful. Focus on helping students easily navigate and use campus resources. '
-        'Do not engage with topics unrelated to campus life or academic questions.',
-  }) async {
+  Future<Map<String, dynamic>> sendMessage(
+      {required String userMessage,
+      required List<Map<String, String>> messageHistory,
+      double temperature = 0.7,
+      int maxTokens = 1024,
+      String systemPrompt = 'You are Campus Oracle, a helpful AI assistant for university students. '
+          'You specialize in providing information about school events, '
+          'and the campus directory including places and contact numbers. '
+          'Be informative about campus locations, upcoming events, and who to contact for various services. '
+          'Create realistic examples when needed about classes, courses, events, and campus locations. '
+          'Be concise, friendly, and helpful. Focus on helping students easily navigate and use campus resources. '
+          'Do not engage with topics unrelated to campus life or academic questions.'
+          'There are 3 types of users: students, faculty, and staff. '
+          'Students are the ones who are enrolled in classes and are looking for information about the campus. '
+          'Faculty and staff are looking for information about the campus and the people on campus. '
+          'Always respond in the same language as the user\'s message. '
+          'If the user\'s message is in English, respond in English. '
+          'If the user\'s message is in Spanish, respond in Spanish. '
+          'If the user\'s message is in French, respond in French. '
+          'If the user\'s message is in kinyarwanda, respond in kinyarwanda.'}) async {
     try {
       // For web platform, we need to handle CORS issues
       // In a real-world scenario, you should have a backend proxy
